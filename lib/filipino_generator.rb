@@ -235,6 +235,9 @@ class Person
 
         p.permanent_address = Address.random
 
+        # 33% will have a different present address from permanent address
+        p.present_address = Random.rand(3).zero? ? Address.random : p.permanent_address
+
         # (+63) + "9" + randomize 9 random numbers
         p.mobile_number = '+639' + Array.new(9) { Random.rand(10) }.join
 

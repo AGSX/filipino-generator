@@ -211,7 +211,6 @@ class Person
       Person.new.tap do |p|
         # rubocop:enable Metrics/BlockLength
         male = Random.rand(2) == 1
-        p.sex = male ? 'MALE' : 'FEMALE'
         # 20% of the population will have a second name
         n_names = Random.rand(5).zero? ? 2 : 1
         p.first_name = Array.new(n_names).map do
@@ -228,6 +227,7 @@ class Person
             p.suffix = 'JR.'
           end
         end
+        p.sex = male ? 'MALE' : 'FEMALE'
 
         p.birth_date = FFaker::Time.between(70.years.ago, 18.years.ago).to_date.iso8601
 

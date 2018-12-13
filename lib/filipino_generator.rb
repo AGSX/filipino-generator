@@ -4,11 +4,10 @@ require 'active_support/all'
 require 'ffaker'
 require 'psgc'
 
-
 # Generate a random set of digits not starting with zero
-def random_not_starting_with_zero(n)
-  max = 10**n
-  min = 10**(n - 1)
+def random_not_starting_with_zero(digits)
+  max = 10**digits
+  min = 10**(digits - 1)
   Random.rand(min...max).to_s
 end
 
@@ -77,7 +76,7 @@ class GovernmentId
   attr_accessor :image_file
 
   # Also allows
-  TYPES = ['TIN', 'GSIS', 'SSS', 'CRN', 'PASSPORT', 'STUDENT ID']
+  TYPES = ['TIN', 'GSIS', 'SSS', 'CRN', 'PASSPORT', 'STUDENT ID'].freeze
 
   # Generates a random government TIN, GSIS, SSS or CRN
   def self.random_tin_gsis_sss_or_crn
@@ -92,13 +91,15 @@ class GovernmentId
                     random_not_starting_with_zero(10)
                   when 'CRN'
                     random_not_starting_with_zero(12)
-      end
+                  end
     end
   end
 end
 
-# A Filiino
+# A Filipino
+# rubocop:disable Metrics/ClassLength
 class Person
+  # rubocop:enable Metrics/ClassLength
   attr_accessor :first_name, :middle_name, :last_name, :suffix
   attr_accessor :nationality
 
@@ -198,15 +199,17 @@ class Person
 
     public
 
-    def random_digits(n, prefix = nil)
-      ([prefix] + Array.new(n).map { Random.rand(10) }).join
+    def random_digits(digits, prefix = nil)
+      ([prefix] + Array.new(digits).map { Random.rand(10) }).join
     end
 
     # Generate a Person record using FFaker
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
     def generate
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      # rubocop:disable Metrics/BlockLength
       Person.new.tap do |p|
+        # rubocop:enable Metrics/BlockLength
         male = Random.rand(2) == 1
         p.sex = male ? 'MALE' : 'FEMALE'
         # 20% of the population will have a second name
